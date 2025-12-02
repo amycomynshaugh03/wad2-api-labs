@@ -9,21 +9,18 @@ const AuthContextProvider = (props) => {
   const [authToken, setAuthToken] = useState(existingToken); //eslint-disable-line
   const [userName, setUserName] = useState("");
 
-
-  const setToken = (data) => {
-    const rawToken = data.replace(/^BEARER\s+/i, ''); // strip "BEARER "
-    localStorage.setItem("token", rawToken);
-    setAuthToken(rawToken);
+  const setToken = (token, username) => {
+    localStorage.setItem("token", token);
+    setAuthToken(token);
+    setIsAuthenticated(true);
+    setUserName(username);
   }
 
   const authenticate = async (username, password) => {
     const result = await login(username, password);
     if (result.token) {
-      setToken(result.token); 
-      setIsAuthenticated(true);
-      setUserName(username);
-    } else {
-      alert(result.msg || "Login failed"); 
+      const rawToken = result.token.replace(/^BEARER\s+/i, '');
+      setToken(rawToken, username);
     }
   };
 
@@ -34,10 +31,10 @@ const AuthContextProvider = (props) => {
 
   const signout = () => {
     localStorage.removeItem("token");
-    setIsAuthenticated(false);
-    setAuthToken(null);
+    setAuthToken(null); //eslint-disable-line
     setUserName("");
-  }
+    setIsAuthenticated(false);
+  };
 
   return (
     <AuthContext.Provider
@@ -46,10 +43,11 @@ const AuthContextProvider = (props) => {
         authenticate,
         register,
         signout,
-        userName
+        userName,
+        authToken, 
       }}
     >
-      {props.children}
+      {props.children} {/* eslint-disable-line */}
     </AuthContext.Provider>
   );
 };
