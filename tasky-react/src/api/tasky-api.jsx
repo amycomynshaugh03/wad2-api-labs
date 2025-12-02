@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5000/tasks"; // Adjust the port if your backend uses a different one
+const API_URL = "http://localhost:5000/tasks"; 
 
 export async function getTasks() {
   const res = await fetch(API_URL);
@@ -33,3 +33,25 @@ export async function deleteTask(id) {
   if (!res.ok) throw new Error("Failed to delete task");
   return res.json();
 }
+
+export const login = async (username, password) => {
+    const response = await fetch('http://localhost:8080/api/users', {
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        method: 'post',
+        body: JSON.stringify({ username: username, password: password })
+    });
+    return response.json();
+};
+
+export const signup = async (username, password) => {
+    const response = await fetch('http://localhost:8080/api/users?action=register', {
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        method: 'post',
+        body: JSON.stringify({ username: username, password: password })
+    });
+    return response.json();
+};

@@ -1,7 +1,8 @@
 import Task from '../components/Task';
 import AddTaskForm from '../components/Form';
 import { useState, useEffect } from 'react'; 
-import { getTasks, addTask, deleteTask, updateTask } from "../api/tasky-api";
+import { getTasks, addTask, deleteTask, updateTask } from "../api/tasky-api.jsx";
+
 
 
 function TasksPage() {
